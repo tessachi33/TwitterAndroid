@@ -11,6 +11,7 @@ import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -28,11 +29,25 @@ public class MainActivity extends AppCompatActivity {
 
     EditText usernameEditText, passwordEditText;
 
+  public void showUserList() {
+
+    Intent intent = new Intent(getApplicationContext(), UserList.class);
+    startActivity(intent);
+
+  }
+
     public void loginOrSignup(View view){
       ParseUser.logInInBackground(String.valueOf(usernameEditText.getText()), String.valueOf(passwordEditText.getText()), new LogInCallback() {
         public void done(ParseUser user, ParseException e) {
           if (user != null) {
             Log.i("AppInfo", "Logged In");
+
+            showUserList();
+
+            Intent intent = new Intent(getApplicationContext(), UserList.class);
+            startActivity(intent);
+
+
           } else {
             ParseUser newUser = new ParseUser();
             newUser.setUsername(String.valueOf(usernameEditText.getText()));
@@ -42,9 +57,11 @@ public class MainActivity extends AppCompatActivity {
               public void done(ParseException e) {
                 if (e == null) {
                   Log.i("AppInfo", "Signed Up");
+                  showUserList();
+
                 } else {
 
-                  Toast.makeText(getApplication(), "Could not login or signup- please, try again.", Toast.LENGTH_LONG);
+                  Toast.makeText(getApplication(), "Could not login or signup- please, try again.", Toast.LENGTH_LONG).show();
 
                 }
               }
@@ -64,6 +81,12 @@ public class MainActivity extends AppCompatActivity {
     ParseAnalytics.trackAppOpenedInBackground(getIntent());
       usernameEditText = (EditText) findViewById(R.id.username);
       passwordEditText = (EditText) findViewById(R.id.password);
+
+
+    ParseUser currentUser = ParseUser.getCurrentUser();
+    if(currentUser != null) {
+      showUserList();
+    }
 
 
   }
