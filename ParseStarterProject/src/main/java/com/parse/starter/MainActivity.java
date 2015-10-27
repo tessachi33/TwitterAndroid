@@ -7,19 +7,40 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  */
 package com.parse.starter;
+import com.parse.LogInCallback;
+import com.parse.ParseException;
+import com.parse.ParseUser;
 import com.parse.starter.R;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 
 import com.parse.ParseAnalytics;
 import com.parse.ParseObject;
 
 
+
 public class MainActivity extends AppCompatActivity {
 
+    EditText usernamEditText, passwordEditText;
+
+    public void loginOrSignup(View view){
+      ParseUser.logInInBackground("Jerry", "showmethemoney", new LogInCallback() {
+        public void done(ParseUser user, ParseException e) {
+          if (user != null) {
+            // Hooray! The user is logged in.
+          } else {
+            // Signup failed. Look at the ParseException to see what happened.
+          }
+        }
+      });
+
+
+    }
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
